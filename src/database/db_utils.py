@@ -52,22 +52,24 @@ def init_schema():
         schema_sql = f.read()
     
     with engine.connect() as conn:
-        try:
-            conn.execute(text("SELECT user_id FROM patients LIMIT 1"))
-        except Exception:
-            try:
-                conn.execute(text("ALTER TABLE patients ADD COLUMN user_id TEXT DEFAULT 'default'"))
-                conn.commit()
-            except Exception:
-                pass
-        
         for statement in schema_sql.split(";"):
             statement = statement.strip()
             if statement:
                 try:
                     conn.execute(text(statement))
-                except Exception:
-                    pass
+                except Exception as e:
+                    if "already exists" not in str(e).lower() and "duplicate" not in str(e).lower():
+                        pass
+        
+        try:
+            result = conn.execute(text("PRAGMA table_info(patients)"))
+            columns = [row[1] for row in result.fetchall()]
+            if "user_id" not in columns:
+                conn.execute(text("ALTER TABLE patients ADD COLUMN user_id TEXT DEFAULT 'default'"))
+                conn.commit()
+        except Exception:
+            pass
+        
         conn.commit()
 
 
