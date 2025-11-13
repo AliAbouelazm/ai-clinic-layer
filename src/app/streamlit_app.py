@@ -39,17 +39,17 @@ st.markdown("""
     }
     
     .main {
-        background-color: #faf9f7;
+        background-color: #f5f3f0;
     }
     
     .stApp {
-        background-color: #faf9f7;
+        background-color: #f5f3f0;
     }
     
     .logo-header {
         text-align: center;
         padding: 2rem 0 1rem;
-        border-bottom: 2px solid #8b7355;
+        border-bottom: 2px solid #8b6f47;
         margin-bottom: 2rem;
     }
     
@@ -57,7 +57,7 @@ st.markdown("""
         font-family: 'Playfair Display', serif;
         font-size: 3rem;
         font-weight: 700;
-        color: #2c3e2d;
+        color: #3d2f1f;
         letter-spacing: 2px;
         margin: 0;
     }
@@ -73,13 +73,13 @@ st.markdown("""
     
     h1, h2, h3 {
         font-family: 'Playfair Display', serif;
-        color: #2c3e2d;
+        color: #3d2f1f;
         font-weight: 600;
     }
     
     .stButton>button {
-        background-color: #5a7c5e;
-        color: #faf9f7;
+        background-color: #8b6f47;
+        color: #ffffff;
         border: none;
         font-family: 'Crimson Text', serif;
         font-size: 1rem;
@@ -89,20 +89,20 @@ st.markdown("""
     }
     
     .stButton>button:hover {
-        background-color: #4a6b4e;
+        background-color: #7a5f3a;
     }
     
     .stSelectbox label, .stNumberInput label, .stTextArea label, .stRadio label {
         font-family: 'Crimson Text', serif;
-        color: #2c3e2d;
+        color: #3d2f1f;
         font-weight: 600;
     }
     
     .stSelectbox>div>div, .stNumberInput>div>div>input, .stTextArea>div>div>textarea {
         font-family: 'Crimson Text', serif;
-        color: #2c3e2d;
-        background-color: #ffffff;
-        border: 1px solid #d4c5b0;
+        color: #3d2f1f;
+        background-color: #fefefe;
+        border: 1px solid #c9b8a3;
     }
     
     .stTextArea>div>div>textarea {
@@ -112,30 +112,30 @@ st.markdown("""
     
     .stRadio>div {
         font-family: 'Crimson Text', serif;
-        color: #2c3e2d;
+        color: #3d2f1f;
     }
     
     .stExpander {
-        background-color: #ffffff;
-        border: 1px solid #d4c5b0;
+        background-color: #fefefe;
+        border: 1px solid #c9b8a3;
         border-radius: 4px;
         margin-bottom: 1rem;
     }
     
     .stExpander label {
         font-family: 'Playfair Display', serif;
-        color: #2c3e2d;
+        color: #3d2f1f;
         font-weight: 600;
     }
     
     p, div, span, li {
         font-family: 'Crimson Text', serif;
-        color: #2c3e2d;
+        color: #3d2f1f;
     }
     
     .control-section {
-        background-color: #ffffff;
-        border: 1px solid #d4c5b0;
+        background-color: #fefefe;
+        border: 1px solid #c9b8a3;
         border-radius: 4px;
         padding: 1.5rem;
         margin-bottom: 2rem;
@@ -143,17 +143,17 @@ st.markdown("""
     
     .section-title {
         font-family: 'Playfair Display', serif;
-        color: #2c3e2d;
+        color: #3d2f1f;
         font-size: 1.5rem;
         font-weight: 600;
         margin-bottom: 1rem;
-        border-bottom: 2px solid #8b7355;
+        border-bottom: 2px solid #8b6f47;
         padding-bottom: 0.5rem;
     }
     
     .stMetric {
-        background-color: #ffffff;
-        border: 1px solid #d4c5b0;
+        background-color: #fefefe;
+        border: 1px solid #c9b8a3;
         padding: 1rem;
         border-radius: 4px;
     }
@@ -166,12 +166,12 @@ st.markdown("""
     
     .stMetric [data-testid="stMetricValue"] {
         font-family: 'Playfair Display', serif;
-        color: #2c3e2d;
+        color: #3d2f1f;
     }
     
     .disclaimer {
-        background-color: #fff8e8;
-        border-left: 4px solid #8b7355;
+        background-color: #f5ede0;
+        border-left: 4px solid #8b6f47;
         padding: 1rem;
         margin-bottom: 2rem;
         font-family: 'Crimson Text', serif;
@@ -185,7 +185,7 @@ st.markdown("""
     
     .sidebar h1, .sidebar h2, .sidebar h3 {
         font-family: 'Playfair Display', serif;
-        color: #2c3e2d;
+        color: #3d2f1f;
     }
     
     .stAlert {
@@ -193,55 +193,55 @@ st.markdown("""
     }
     
     .stInfo {
-        background-color: #e8f0e9;
-        border-left: 4px solid #5a7c5e;
+        background-color: #ede8e0;
+        border-left: 4px solid #8b6f47;
     }
     
     .stSuccess {
-        background-color: #e8f0e9;
-        border-left: 4px solid #5a7c5e;
+        background-color: #ede8e0;
+        border-left: 4px solid #8b6f47;
     }
     
     .stWarning {
-        background-color: #fff8e8;
-        border-left: 4px solid #8b7355;
+        background-color: #f5ede0;
+        border-left: 4px solid #8b6f47;
     }
     
     .stError {
-        background-color: #f5e8e8;
-        border-left: 4px solid #8b5a5a;
+        background-color: #f0e5e5;
+        border-left: 4px solid #a67c7c;
     }
     
     code {
         background-color: #f5f3f0 !important;
-        color: #2c3e2d !important;
-        border: 1px solid #d4c5b0 !important;
+        color: #3d2f1f !important;
+        border: 1px solid #c9b8a3 !important;
     }
     
     pre {
         background-color: #f5f3f0 !important;
-        border: 1px solid #d4c5b0 !important;
-        color: #2c3e2d !important;
+        border: 1px solid #c9b8a3 !important;
+        color: #3d2f1f !important;
     }
     
     .stCode {
         background-color: #f5f3f0 !important;
-        border: 1px solid #d4c5b0 !important;
+        border: 1px solid #c9b8a3 !important;
     }
     
     [data-testid="stCodeBlock"] {
         background-color: #f5f3f0 !important;
-        border: 1px solid #d4c5b0 !important;
+        border: 1px solid #c9b8a3 !important;
     }
     
     [data-testid="stCodeBlock"] pre {
         background-color: #f5f3f0 !important;
-        color: #2c3e2d !important;
+        color: #3d2f1f !important;
     }
     
     .stJson {
         background-color: #f5f3f0 !important;
-        border: 1px solid #d4c5b0 !important;
+        border: 1px solid #c9b8a3 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -268,8 +268,8 @@ import os
 
 if not MODEL_PATH.exists():
     st.markdown("""
-    <div class="control-section" style="background-color: #fff8e8; border-left: 4px solid #8b7355;">
-        <div style="font-family: 'Playfair Display', serif; color: #2c3e2d; font-weight: 600; margin-bottom: 0.5rem;">
+    <div class="control-section" style="background-color: #f5ede0; border-left: 4px solid #8b6f47;">
+        <div style="font-family: 'Playfair Display', serif; color: #3d2f1f; font-weight: 600; margin-bottom: 0.5rem;">
             Model Not Trained
         </div>
         <p style="font-family: 'Crimson Text', serif; color: #5a4a3a; margin-bottom: 1rem;">
@@ -425,14 +425,14 @@ if page == "Triage Assessment":
             st.metric("Severity", f"{triage_data['parsed_symptoms'].get('severity', 0):.1f}/10")
         
         st.markdown("""
-        <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #2c3e2d; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem;">
+        <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #3d2f1f; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem;">
             Explanation
         </div>
         """, unsafe_allow_html=True)
         st.info(triage_data["explanation"])
         
         st.markdown("""
-        <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #2c3e2d; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem;">
+        <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #3d2f1f; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem;">
             Detected Symptoms
         </div>
         """, unsafe_allow_html=True)
@@ -514,7 +514,7 @@ elif page == "Analytics":
     
     try:
         st.markdown("""
-        <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #2c3e2d; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem;">
+        <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #3d2f1f; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem;">
             Triage Distribution
         </div>
         """, unsafe_allow_html=True)
@@ -522,7 +522,7 @@ elif page == "Analytics":
         st.pyplot(fig1)
         
         st.markdown("""
-        <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #2c3e2d; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem;">
+        <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #3d2f1f; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem;">
             Severity vs Risk Score
         </div>
         """, unsafe_allow_html=True)
