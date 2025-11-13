@@ -49,19 +49,6 @@ def init_schema():
     engine = get_engine()
     
     with engine.connect() as conn:
-        try:
-            result = conn.execute(text("SELECT name FROM sqlite_master WHERE type='table' AND name='patients'"))
-            table_exists = result.fetchone() is not None
-            
-            if table_exists:
-                result = conn.execute(text("PRAGMA table_info(patients)"))
-                columns = [row[1] for row in result.fetchall()]
-                if "user_id" not in columns:
-                    conn.execute(text("ALTER TABLE patients ADD COLUMN user_id TEXT DEFAULT 'default'"))
-                    conn.commit()
-        except Exception:
-            pass
-        
         with open(schema_path, "r") as f:
             schema_sql = f.read()
         
@@ -74,6 +61,30 @@ def init_schema():
                     error_str = str(e).lower()
                     if "already exists" not in error_str and "duplicate" not in error_str:
                         pass
+        
+        try:
+            result = conn.execute(text("SELECT name FROM sqlite_master WHERE type='table' AND name='patients'"))
+            table_exists = result.fetchone() is not None
+            
+            if table_exists:
+                try:
+                    result = conn.execute(text("PRAGMA table_info(patients)"))
+                    rows = result.fetchall()
+                    columns = []
+                    for row in rows:
+                        if len(row) > 1:
+                            columns.append(row[1])
+                    
+                    if "user_id" not in columns:
+                        try:
+                            conn.execute(text("ALTER TABLE patients ADD COLUMN user_id TEXT DEFAULT 'default'"))
+                            conn.commit()
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
+        except Exception:
+            pass
         
         conn.commit()
 
