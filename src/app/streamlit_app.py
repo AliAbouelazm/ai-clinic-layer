@@ -79,7 +79,7 @@ st.markdown("""
     
     .stButton>button {
         background-color: #6b5237;
-        color: #f5f3f0 !important;
+        color: #ffffff !important;
         border: none;
         font-family: 'Crimson Text', serif;
         font-size: 1rem;
@@ -91,15 +91,26 @@ st.markdown("""
     
     .stButton>button:hover {
         background-color: #5a4229;
-        color: #f5f3f0 !important;
+        color: #ffffff !important;
     }
     
     .stButton>button:focus {
-        color: #f5f3f0 !important;
+        color: #ffffff !important;
     }
     
     .stButton>button:active {
-        color: #f5f3f0 !important;
+        color: #ffffff !important;
+    }
+    
+    button[data-testid="baseButton-secondary"],
+    button[data-testid="baseButton-primary"] {
+        color: #ffffff !important;
+    }
+    
+    .stButton button p,
+    .stButton button span,
+    .stButton button div {
+        color: #ffffff !important;
     }
     
     .stSelectbox label, .stNumberInput label, .stTextArea label, .stRadio label {
