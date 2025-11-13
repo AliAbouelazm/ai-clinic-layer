@@ -90,20 +90,35 @@ def _layer2_severe_injuries(raw_text: str, parsed_symptoms: Dict[str, Any]) -> f
 def _layer3_severity_spectrum(parsed_symptoms: Dict[str, Any]) -> float:
     """
     Layer 3: Severity spectrum analysis - maps severity 0-10 to risk 0-1.
-    Returns continuous risk score using exponential curve for better spectrum.
+    Returns continuous risk score with better coverage of 50-70% range.
     """
     severity = parsed_symptoms.get("severity", 5.0)
     
     if severity >= 10.0:
         return 0.95
     elif severity <= 0.0:
-        return 0.08
+        return 0.10
     
-    normalized = severity / 10.0
-    
-    base_risk = 0.08 + (normalized ** 1.8) * 0.87
-    
-    return min(base_risk, 0.95)
+    if severity >= 9.0:
+        return 0.88 + ((severity - 9.0) / 1.0) * 0.07
+    elif severity >= 8.0:
+        return 0.78 + ((severity - 8.0) / 1.0) * 0.10
+    elif severity >= 7.0:
+        return 0.65 + ((severity - 7.0) / 1.0) * 0.13
+    elif severity >= 6.5:
+        return 0.58 + ((severity - 6.5) / 0.5) * 0.07
+    elif severity >= 6.0:
+        return 0.50 + ((severity - 6.0) / 0.5) * 0.08
+    elif severity >= 5.5:
+        return 0.42 + ((severity - 5.5) / 0.5) * 0.08
+    elif severity >= 5.0:
+        return 0.32 + ((severity - 5.0) / 0.5) * 0.10
+    elif severity >= 4.0:
+        return 0.20 + ((severity - 4.0) / 1.0) * 0.12
+    elif severity >= 3.0:
+        return 0.15 + ((severity - 3.0) / 1.0) * 0.05
+    else:
+        return 0.10 + ((severity - 0.0) / 3.0) * 0.05
 
 
 def _layer4_red_flags(parsed_symptoms: Dict[str, Any]) -> float:
