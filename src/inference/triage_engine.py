@@ -36,19 +36,26 @@ def _check_critical_symptoms(parsed_symptoms: Dict[str, Any], raw_text: str = No
     Returns:
         True if critical symptoms detected
     """
+    if not raw_text:
+        raw_text = parsed_symptoms.get("raw_text", "")
+    
+    text_lower = (raw_text or "").lower().strip()
+    
+    if not text_lower:
+        return False
+    
     symptom_categories = parsed_symptoms.get("symptom_categories", [])
     red_flags = parsed_symptoms.get("red_flags", [])
     severity = parsed_symptoms.get("severity", 0)
     
-    if not raw_text:
-        raw_text = parsed_symptoms.get("raw_text", "")
+    if "dying" in text_lower:
+        return True
     
-    critical_symptoms = [
-        "chest_pain", "heart", "cardiac", "shortness_of_breath",
-        "bleeding", "hemorrhage", "unconscious", "severe_chest_pain"
-    ]
+    if "death" in text_lower and ("feel" in text_lower or "im" in text_lower or "i'm" in text_lower or "i am" in text_lower):
+        return True
     
-    text_lower = (raw_text or "").lower()
+    if "heart" in text_lower and ("hurt" in text_lower or "pain" in text_lower or "hurting" in text_lower or "hurts" in text_lower):
+        return True
     
     if severity >= 9.0:
         return True
@@ -65,20 +72,12 @@ def _check_critical_symptoms(parsed_symptoms: Dict[str, Any], raw_text: str = No
     if any(flag in ["severe_chest_pain", "difficulty_breathing", "loss_of_consciousness", "critical_severity"] for flag in red_flags):
         return True
     
-    if any(phrase in text_lower for phrase in ["dying", "death", "im dying", "i'm dying", "i am dying"]):
+    if any(phrase in text_lower for phrase in ["can't breathe", "can't breath", "cant breathe", "struggling to breathe"]):
+        if "chest" in text_lower or "heart" in text_lower:
+            return True
+    
+    if ("bleeding" in text_lower or "blood" in text_lower) and severity >= 7.0:
         return True
-    
-    if any(phrase in text_lower for phrase in ["dying", "death", "can't breathe", "can't breath", "cant breathe", "bleeding", "blood"]):
-        if "chest" in text_lower or "heart" in text_lower or "breath" in text_lower:
-            return True
-    
-    if ("heart" in text_lower and ("hurt" in text_lower or "pain" in text_lower or "hurting" in text_lower)):
-        if severity >= 6.0 or "dying" in text_lower:
-            return True
-    
-    if "bleeding" in text_lower or "blood" in text_lower:
-        if severity >= 7.0:
-            return True
     
     return False
 
@@ -101,6 +100,9 @@ def run_triage(
     Returns:
         Tuple of (risk_score, triage_label, explanation)
     """
+    if not raw_text:
+        raw_text = parsed_symptoms.get("raw_text", "")
+    
     is_critical = _check_critical_symptoms(parsed_symptoms, raw_text)
     
     if is_critical:
