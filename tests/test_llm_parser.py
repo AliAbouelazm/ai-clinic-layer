@@ -36,3 +36,4 @@ def test_mock_parse_red_flags():
     
     assert "loss_of_consciousness" in result["red_flags"] or "difficulty_breathing" in result["red_flags"]
 
+

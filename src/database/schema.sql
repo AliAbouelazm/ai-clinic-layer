@@ -52,3 +52,4 @@ CREATE INDEX IF NOT EXISTS idx_symptom_reports_patient ON symptom_reports(patien
 CREATE INDEX IF NOT EXISTS idx_clinical_features_patient ON clinical_features(patient_id);
 CREATE INDEX IF NOT EXISTS idx_triage_predictions_patient ON triage_predictions(patient_id);
 
+

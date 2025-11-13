@@ -25,58 +25,31 @@ def classify_triage(risk_score: float) -> str:
         return "self_care"
 
 
-def _check_critical_symptoms(parsed_symptoms: Dict[str, Any], raw_text: str = None) -> bool:
+def _is_critical_text(text: str) -> bool:
     """
-    Check for critical symptoms that require immediate urgent care.
+    Check if text contains critical symptoms.
     
     Args:
-        parsed_symptoms: Parsed symptom dictionary
-        raw_text: Optional raw symptom text for additional checks
+        text: Raw symptom text
         
     Returns:
         True if critical symptoms detected
     """
-    if not raw_text:
-        raw_text = parsed_symptoms.get("raw_text", "")
-    
-    text_lower = (raw_text or "").lower().strip()
-    
-    if not text_lower:
+    if not text:
         return False
     
-    symptom_categories = parsed_symptoms.get("symptom_categories", [])
-    red_flags = parsed_symptoms.get("red_flags", [])
-    severity = parsed_symptoms.get("severity", 0)
+    text_lower = text.lower().strip()
     
     if "dying" in text_lower:
         return True
     
-    if "death" in text_lower and ("feel" in text_lower or "im" in text_lower or "i'm" in text_lower or "i am" in text_lower):
+    if "heart" in text_lower and any(word in text_lower for word in ["hurt", "pain", "hurting", "hurts", "aching", "ache"]):
         return True
     
-    if "heart" in text_lower and ("hurt" in text_lower or "pain" in text_lower or "hurting" in text_lower or "hurts" in text_lower):
+    if ("bleeding" in text_lower or "blood" in text_lower) and ("heart" in text_lower or "chest" in text_lower or "pain" in text_lower):
         return True
     
-    if severity >= 9.0:
-        return True
-    
-    if len(red_flags) >= 1 and severity >= 7.0:
-        return True
-    
-    if len(red_flags) >= 2:
-        return True
-    
-    if "chest_pain" in symptom_categories and "shortness_of_breath" in symptom_categories:
-        return True
-    
-    if any(flag in ["severe_chest_pain", "difficulty_breathing", "loss_of_consciousness", "critical_severity"] for flag in red_flags):
-        return True
-    
-    if any(phrase in text_lower for phrase in ["can't breathe", "can't breath", "cant breathe", "struggling to breathe"]):
-        if "chest" in text_lower or "heart" in text_lower:
-            return True
-    
-    if ("bleeding" in text_lower or "blood" in text_lower) and severity >= 7.0:
+    if "chest" in text_lower and "pain" in text_lower and ("breath" in text_lower or "short" in text_lower):
         return True
     
     return False
@@ -91,11 +64,13 @@ def run_triage(
     """
     Run complete triage pipeline.
     
+    CRITICAL CHECK HAPPENS FIRST - if critical symptoms detected, returns urgent immediately.
+    
     Args:
         parsed_symptoms: Parsed symptom dictionary
         age: Patient age
         sex: Patient sex
-        raw_text: Optional raw symptom text for critical symptom checks
+        raw_text: Raw symptom text (REQUIRED for critical detection)
         
     Returns:
         Tuple of (risk_score, triage_label, explanation)
@@ -103,42 +78,59 @@ def run_triage(
     if not raw_text:
         raw_text = parsed_symptoms.get("raw_text", "")
     
-    text_lower = (raw_text or "").lower().strip()
+    if _is_critical_text(raw_text):
+        return (
+            0.95,
+            "urgent",
+            "CRITICAL: Critical symptoms detected (heart pain, chest pain, bleeding, or other severe indicators). Immediate medical attention is required. Please seek emergency care immediately."
+        )
     
-    if text_lower:
-        if "dying" in text_lower or "im dying" in text_lower or "i'm dying" in text_lower:
-            return (0.95, "urgent", "CRITICAL: The phrase 'dying' was detected in your symptoms. This requires immediate medical attention. Please seek emergency care immediately.")
-        
-        if "bleeding" in text_lower or "blood" in text_lower:
-            if "heart" in text_lower or "chest" in text_lower or "pain" in text_lower:
-                return (0.95, "urgent", "CRITICAL: Bleeding combined with heart/chest symptoms requires immediate medical evaluation. Please seek emergency care immediately.")
-            if any(word in text_lower for word in ["heavy", "lot", "much", "severe", "bad"]):
-                return (0.95, "urgent", "CRITICAL: Significant bleeding detected. This requires immediate medical attention. Please seek emergency care immediately.")
-        
-        if "heart" in text_lower and any(word in text_lower for word in ["hurt", "pain", "hurting", "hurts", "aching", "ache"]):
-            return (0.95, "urgent", "CRITICAL: Heart pain or discomfort requires immediate medical evaluation. Please seek emergency care immediately.")
-        
-        if "chest" in text_lower and "pain" in text_lower and ("breath" in text_lower or "short" in text_lower):
-            return (0.95, "urgent", "CRITICAL: Chest pain with breathing difficulties is a medical emergency. Please seek emergency care immediately.")
-        
-        if "heart" in text_lower and ("bleeding" in text_lower or "blood" in text_lower):
-            return (0.95, "urgent", "CRITICAL: Heart symptoms combined with bleeding is a medical emergency. Please seek emergency care immediately.")
+    symptom_categories = parsed_symptoms.get("symptom_categories", [])
+    red_flags = parsed_symptoms.get("red_flags", [])
+    severity = parsed_symptoms.get("severity", 0)
     
-    is_critical = _check_critical_symptoms(parsed_symptoms, raw_text)
+    if severity >= 9.0:
+        return (
+            0.95,
+            "urgent",
+            "CRITICAL: Very high severity detected. Immediate medical attention is required. Please seek emergency care immediately."
+        )
     
-    if is_critical:
-        risk_score = 0.95
-        triage_label = "urgent"
-        red_flags = parsed_symptoms.get("red_flags", [])
-        if not red_flags:
-            red_flags = ["critical_symptoms_detected"]
-        explanation = f"CRITICAL: Based on the symptoms described (chest pain, shortness of breath, bleeding, or other severe indicators), immediate medical attention is required. This case has been automatically classified as urgent. Please seek emergency care immediately."
-    else:
+    if len(red_flags) >= 2:
+        return (
+            0.95,
+            "urgent",
+            "CRITICAL: Multiple red flags detected. Immediate medical attention is required. Please seek emergency care immediately."
+        )
+    
+    if "chest_pain" in symptom_categories and "shortness_of_breath" in symptom_categories:
+        return (
+            0.95,
+            "urgent",
+            "CRITICAL: Chest pain with shortness of breath is a medical emergency. Please seek emergency care immediately."
+        )
+    
+    if any(flag in ["severe_chest_pain", "difficulty_breathing", "loss_of_consciousness", "critical_severity"] for flag in red_flags):
+        return (
+            0.95,
+            "urgent",
+            "CRITICAL: Severe red flags detected. Immediate medical attention is required. Please seek emergency care immediately."
+        )
+    
+    if ("bleeding" in (raw_text or "").lower() or "blood" in (raw_text or "").lower()) and severity >= 7.0:
+        return (
+            0.95,
+            "urgent",
+            "CRITICAL: Bleeding with high severity detected. Immediate medical attention is required. Please seek emergency care immediately."
+        )
+    
+    try:
         risk_score = compute_risk_score(parsed_symptoms, age, sex)
         triage_label = classify_triage(risk_score)
-        red_flags = parsed_symptoms.get("red_flags", [])
         explanation = generate_explanation(risk_score, triage_label, parsed_symptoms, red_flags)
+    except Exception:
+        risk_score = 0.3
+        triage_label = "consult"
+        explanation = "Unable to compute risk score. Please consult with a healthcare provider."
     
     return risk_score, triage_label, explanation
-
-

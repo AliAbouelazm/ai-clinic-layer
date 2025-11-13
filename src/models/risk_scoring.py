@@ -26,6 +26,25 @@ def load_feature_names() -> list:
     return joblib.load(feature_names_path)
 
 
+def _check_critical_in_text(raw_text: str) -> bool:
+    """Check if text contains critical symptoms."""
+    if not raw_text:
+        return False
+    
+    text_lower = raw_text.lower().strip()
+    
+    if "dying" in text_lower:
+        return True
+    
+    if "heart" in text_lower and any(word in text_lower for word in ["hurt", "pain", "hurting", "hurts", "aching", "ache"]):
+        return True
+    
+    if ("bleeding" in text_lower or "blood" in text_lower) and ("heart" in text_lower or "chest" in text_lower or "pain" in text_lower):
+        return True
+    
+    return False
+
+
 def compute_risk_score(
     parsed_symptoms: Dict[str, Any],
     age: int = None,
@@ -33,6 +52,8 @@ def compute_risk_score(
 ) -> float:
     """
     Compute risk score from parsed symptoms and demographics.
+    
+    CRITICAL CHECK HAPPENS FIRST - returns 0.95 if critical symptoms detected.
     
     Args:
         parsed_symptoms: Parsed symptom dictionary
@@ -43,20 +64,9 @@ def compute_risk_score(
         Risk score between 0 and 1
     """
     raw_text = parsed_symptoms.get("raw_text", "")
-    text_lower = (raw_text or "").lower().strip()
     
-    if text_lower:
-        if "dying" in text_lower or "im dying" in text_lower:
-            return 0.95
-        
-        if "heart" in text_lower and any(word in text_lower for word in ["hurt", "pain", "hurting", "hurts", "aching", "ache"]):
-            return 0.95
-        
-        if ("bleeding" in text_lower or "blood" in text_lower) and ("heart" in text_lower or "chest" in text_lower or "pain" in text_lower):
-            return 0.95
-        
-        if "chest" in text_lower and "pain" in text_lower and ("breath" in text_lower or "short" in text_lower):
-            return 0.95
+    if _check_critical_in_text(raw_text):
+        return 0.95
     
     symptom_categories = parsed_symptoms.get("symptom_categories", [])
     red_flags = parsed_symptoms.get("red_flags", [])
@@ -74,17 +84,21 @@ def compute_risk_score(
     if any(flag in ["severe_chest_pain", "difficulty_breathing", "loss_of_consciousness", "critical_severity"] for flag in red_flags):
         return 0.95
     
-    model = load_model()
-    feature_names = load_feature_names()
+    if not MODEL_PATH.exists():
+        return 0.3
     
-    feature_vector = create_feature_vector(parsed_symptoms, age, sex)
-    X = feature_vector_to_array(feature_vector, feature_names).reshape(1, -1)
-    
-    if hasattr(model, "predict_proba"):
-        risk_score = model.predict_proba(X)[0][1]
-    else:
-        risk_score = float(model.predict(X)[0])
-    
-    return float(risk_score)
-
-
+    try:
+        model = load_model()
+        feature_names = load_feature_names()
+        
+        feature_vector = create_feature_vector(parsed_symptoms, age, sex)
+        X = feature_vector_to_array(feature_vector, feature_names).reshape(1, -1)
+        
+        if hasattr(model, "predict_proba"):
+            risk_score = model.predict_proba(X)[0][1]
+        else:
+            risk_score = float(model.predict(X)[0])
+        
+        return float(risk_score)
+    except Exception:
+        return 0.3

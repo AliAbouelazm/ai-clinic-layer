@@ -59,3 +59,4 @@ def test_patient_history_endpoint():
     assert "history" in data
     assert len(data["history"]) > 0
 
+

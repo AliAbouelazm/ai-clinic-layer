@@ -56,3 +56,4 @@ def _create_sample_dataset() -> pd.DataFrame:
     logger.info(f"Created sample dataset with {len(df)} rows")
     return df
 
+

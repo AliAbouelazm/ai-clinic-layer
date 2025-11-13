@@ -41,3 +41,4 @@ def test_feature_vector_to_array():
     assert array[1] == 0.75
     assert array[2] == 2.0
 
+

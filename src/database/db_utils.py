@@ -172,3 +172,4 @@ def get_patient_history(session: Session, patient_id: int):
     )
     return result.fetchall()
 
+

@@ -38,3 +38,4 @@ def clean_medical_data(df: pd.DataFrame) -> pd.DataFrame:
     logger.info(f"Cleaned dataset: {len(df_clean)} rows remaining")
     return df_clean
 
+

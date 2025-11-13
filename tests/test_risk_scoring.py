@@ -50,3 +50,4 @@ def test_risk_score_with_red_flags():
     
     assert risk_high >= risk_low
 
+

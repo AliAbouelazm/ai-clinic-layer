@@ -62,3 +62,4 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     train_model("logistic_regression")
 
+
