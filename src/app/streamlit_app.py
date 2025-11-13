@@ -78,18 +78,29 @@ st.markdown("""
     }
     
     .stButton>button {
-        background-color: #8b6f47;
-        color: #ffffff;
+        background-color: #6b5237;
+        color: #ffffff !important;
         border: none;
         font-family: 'Crimson Text', serif;
         font-size: 1rem;
+        font-weight: 600;
         padding: 0.6rem 1.5rem;
         border-radius: 4px;
         transition: background-color 0.3s;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
     
     .stButton>button:hover {
-        background-color: #7a5f3a;
+        background-color: #5a4229;
+        color: #ffffff !important;
+    }
+    
+    .stButton>button:focus {
+        color: #ffffff !important;
+    }
+    
+    .stButton>button:active {
+        color: #ffffff !important;
     }
     
     .stSelectbox label, .stNumberInput label, .stTextArea label, .stRadio label {
