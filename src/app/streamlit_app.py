@@ -454,6 +454,16 @@ if page == "Triage Assessment":
         <div class="section-title">Triage Results</div>
         """, unsafe_allow_html=True)
         
+        if triage_data["triage_label"] == "urgent":
+            st.markdown("""
+            <div style="background-color: #ffebee; border-left: 6px solid #c62828; padding: 1.5rem; margin-bottom: 2rem; border-radius: 4px;">
+                <h3 style="color: #c62828; font-family: 'Playfair Display', serif; margin: 0 0 0.5rem 0;">🚨 URGENT: SEEK IMMEDIATE MEDICAL CARE</h3>
+                <p style="color: #5a4a3a; font-family: 'Crimson Text', serif; margin: 0; font-size: 1.1rem; font-weight: 600;">
+                    Critical symptoms detected. This requires immediate medical attention. Please go to the nearest emergency room or call emergency services.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+        
         col1, col2, col3 = st.columns(3)
         
         with col1:
