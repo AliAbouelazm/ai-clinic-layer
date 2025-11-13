@@ -4,11 +4,18 @@ import streamlit as st
 import pandas as pd
 import json
 import sys
+import os
 from pathlib import Path
 from datetime import datetime
 
-project_root = Path(__file__).parent.parent.parent
+file_path = Path(__file__).resolve()
+project_root = file_path.parent.parent.parent
 sys.path.insert(0, str(project_root))
+
+if str(project_root) not in sys.path:
+    sys.path.append(str(project_root))
+
+os.chdir(project_root)
 
 from src.database.db_utils import get_db_session, insert_patient, insert_symptom_report, insert_clinical_features, insert_triage_prediction, get_patient_history
 from src.database.db_utils import init_schema
