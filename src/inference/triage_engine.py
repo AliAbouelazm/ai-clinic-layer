@@ -253,6 +253,8 @@ def run_triage(
     """
     Run complete triage pipeline with layered spectrum-based assessment.
     
+    ALWAYS uses spectrum-based calculation - does NOT use ML model.
+    
     Args:
         parsed_symptoms: Parsed symptom dictionary
         age: Patient age
