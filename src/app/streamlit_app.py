@@ -137,6 +137,62 @@ st.markdown("""
         border-radius: 6px;
     }
     
+    .stSelectbox [data-baseweb="select"] {
+        color: #1a1a1a !important;
+        background-color: #ffffff !important;
+    }
+    
+    .stSelectbox [data-baseweb="select"] > div {
+        color: #1a1a1a !important;
+    }
+    
+    .stSelectbox [data-baseweb="select"] [aria-selected="true"] {
+        color: #1a1a1a !important;
+    }
+    
+    [data-baseweb="popover"] [role="option"] {
+        color: #1a1a1a !important;
+        background-color: #ffffff !important;
+    }
+    
+    [data-baseweb="popover"] [role="option"]:hover {
+        background-color: #f8f8f8 !important;
+        color: #1a1a1a !important;
+    }
+    
+    [data-baseweb="popover"] [role="option"][aria-selected="true"] {
+        background-color: #f8f8f8 !important;
+        color: #1a1a1a !important;
+    }
+    
+    [data-testid="stAppViewContainer"][data-theme="dark"] .stSelectbox [data-baseweb="select"] {
+        color: #ffffff !important;
+        background-color: #1a1a1a !important;
+    }
+    
+    [data-testid="stAppViewContainer"][data-theme="dark"] .stSelectbox [data-baseweb="select"] > div {
+        color: #ffffff !important;
+    }
+    
+    [data-testid="stAppViewContainer"][data-theme="dark"] [data-baseweb="popover"] {
+        background-color: #1a1a1a !important;
+    }
+    
+    [data-testid="stAppViewContainer"][data-theme="dark"] [data-baseweb="popover"] [role="option"] {
+        color: #ffffff !important;
+        background-color: #1a1a1a !important;
+    }
+    
+    [data-testid="stAppViewContainer"][data-theme="dark"] [data-baseweb="popover"] [role="option"]:hover {
+        background-color: #333333 !important;
+        color: #ffffff !important;
+    }
+    
+    [data-testid="stAppViewContainer"][data-theme="dark"] [data-baseweb="popover"] [role="option"][aria-selected="true"] {
+        background-color: #333333 !important;
+        color: #ffffff !important;
+    }
+    
     .stNumberInput>div>div>input {
         color: #1a1a1a !important;
         background-color: #ffffff !important;
