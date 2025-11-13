@@ -281,6 +281,9 @@ st.markdown("""
 <div class="logo-header">
     <div class="logo-text">clinix.ai</div>
     <div class="logo-subtitle">medical triage assessment</div>
+    <div style="margin-top: 1rem; font-family: 'Crimson Text', serif; font-size: 0.85rem; color: #8b6f47; font-weight: 600;">
+        Version 2.1 - Critical Symptom Detection Active
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
