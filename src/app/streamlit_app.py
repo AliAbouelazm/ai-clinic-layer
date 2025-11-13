@@ -403,7 +403,7 @@ if page == "Triage Assessment":
                             feature_vector=feature_vector
                         )
                         
-                        risk_score, triage_label, explanation = run_triage(parsed_symptoms, age, sex)
+                        risk_score, triage_label, explanation = run_triage(parsed_symptoms, age, sex, raw_text=symptom_text)
                         
                         insert_triage_prediction(
                             session,

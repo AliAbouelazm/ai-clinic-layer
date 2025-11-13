@@ -75,7 +75,7 @@ async def triage_endpoint(request: TriageRequest):
             )
             
             risk_score, triage_label, explanation = run_triage(
-                parsed_symptoms, age=request.age, sex=request.sex
+                parsed_symptoms, age=request.age, sex=request.sex, raw_text=request.symptom_text
             )
             
             insert_triage_prediction(

@@ -99,30 +99,43 @@ def _mock_parse(raw_text: str) -> Dict[str, Any]:
     text_lower = raw_text.lower()
     
     symptom_categories = []
-    if any(word in text_lower for word in ["chest", "heart", "cardiac"]):
+    if any(word in text_lower for word in ["chest", "heart", "cardiac", "aching pain in my heart"]):
         symptom_categories.append("chest_pain")
-    if any(word in text_lower for word in ["breath", "breathing", "shortness"]):
+    if any(word in text_lower for word in ["breath", "breathing", "shortness", "short of breath"]):
         symptom_categories.append("shortness_of_breath")
     if any(word in text_lower for word in ["fever", "temperature", "hot"]):
         symptom_categories.append("fever")
     if any(word in text_lower for word in ["head", "headache"]):
         symptom_categories.append("headache")
+    if any(word in text_lower for word in ["bleeding", "blood", "hemorrhage"]):
+        symptom_categories.append("bleeding")
     if not symptom_categories:
         symptom_categories.append("general_discomfort")
     
     severity = 5.0
-    if any(word in text_lower for word in ["severe", "extreme", "intense", "unbearable"]):
-        severity = 8.0
+    if any(word in text_lower for word in ["dying", "death", "dead", "kill me"]):
+        severity = 10.0
+    elif any(word in text_lower for word in ["severe", "extreme", "intense", "unbearable", "critical"]):
+        severity = 9.0
+    elif any(word in text_lower for word in ["moderate", "bad"]):
+        severity = 6.0
     elif any(word in text_lower for word in ["mild", "slight", "minor"]):
         severity = 3.0
     
     red_flags = []
-    if any(word in text_lower for word in ["severe chest", "crushing", "pressure"]):
+    if any(word in text_lower for word in ["severe chest", "crushing", "pressure", "heart pain", "aching pain in my heart"]):
         red_flags.append("severe_chest_pain")
     if any(word in text_lower for word in ["unconscious", "passed out", "fainted"]):
         red_flags.append("loss_of_consciousness")
-    if any(word in text_lower for word in ["can't breathe", "struggling to breathe"]):
+    if any(word in text_lower for word in ["can't breathe", "struggling to breathe", "shortness of breath", "short of breath"]):
         red_flags.append("difficulty_breathing")
+    if any(word in text_lower for word in ["bleeding", "blood", "hemorrhage"]):
+        red_flags.append("active_bleeding")
+    if "chest" in text_lower and "breath" in text_lower:
+        red_flags.append("cardiac_concern")
+    
+    if severity >= 9.0:
+        red_flags.append("critical_severity")
     
     return {
         "symptom_categories": symptom_categories,
@@ -224,4 +237,5 @@ def _mock_explanation(risk_score: float, triage_label: str, parsed_symptoms: Dic
         base += " High symptom severity contributes to the risk assessment."
     
     return base
+
 
