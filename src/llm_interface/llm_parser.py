@@ -140,9 +140,19 @@ def _calculate_severity_spectrum(text_lower: str, injuries: list, injury_severit
     elif any(word in text_lower for word in ["very bad", "really bad", "terrible", "awful"]):
         severity = max(severity, 8.0)
     elif any(word in text_lower for word in ["bad", "moderate", "significant"]):
-        severity = max(severity, 6.5)
+        base_severity = 6.5
+        if "bleeding" in text_lower or "blood" in text_lower:
+            if any(phrase in text_lower for phrase in ["won't stop", "wont stop", "not stopping", "continuing", "persistent"]):
+                base_severity = 6.8
+            else:
+                base_severity = 6.5
+        severity = max(severity, base_severity)
     elif any(word in text_lower for word in ["mild", "slight", "minor", "little"]):
         severity = min(severity, 4.0)
+    
+    if ("bleeding" in text_lower or "blood" in text_lower) and any(phrase in text_lower for phrase in ["won't stop", "wont stop", "not stopping", "continuing", "persistent", "heavy"]):
+        if "significant" not in text_lower:
+            severity = max(severity, 7.0)
     
     if len(injuries) >= 2:
         severity = max(severity, 8.5)

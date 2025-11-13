@@ -17,7 +17,7 @@ NOTEBOOKS_DIR = PROJECT_ROOT / "notebooks"
 DB_PATH = DATA_DIR / "clinic.db"
 DB_URL = f"sqlite:///{DB_PATH}"
 
-LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openai")
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "mock")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 
