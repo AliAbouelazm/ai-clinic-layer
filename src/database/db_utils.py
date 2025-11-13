@@ -48,27 +48,32 @@ def init_schema():
     schema_path = PROJECT_ROOT / "src" / "database" / "schema.sql"
     engine = get_engine()
     
-    with open(schema_path, "r") as f:
-        schema_sql = f.read()
-    
     with engine.connect() as conn:
+        try:
+            result = conn.execute(text("SELECT name FROM sqlite_master WHERE type='table' AND name='patients'"))
+            table_exists = result.fetchone() is not None
+            
+            if table_exists:
+                result = conn.execute(text("PRAGMA table_info(patients)"))
+                columns = [row[1] for row in result.fetchall()]
+                if "user_id" not in columns:
+                    conn.execute(text("ALTER TABLE patients ADD COLUMN user_id TEXT DEFAULT 'default'"))
+                    conn.commit()
+        except Exception:
+            pass
+        
+        with open(schema_path, "r") as f:
+            schema_sql = f.read()
+        
         for statement in schema_sql.split(";"):
             statement = statement.strip()
-            if statement:
+            if statement and not statement.isspace():
                 try:
                     conn.execute(text(statement))
                 except Exception as e:
-                    if "already exists" not in str(e).lower() and "duplicate" not in str(e).lower():
+                    error_str = str(e).lower()
+                    if "already exists" not in error_str and "duplicate" not in error_str:
                         pass
-        
-        try:
-            result = conn.execute(text("PRAGMA table_info(patients)"))
-            columns = [row[1] for row in result.fetchall()]
-            if "user_id" not in columns:
-                conn.execute(text("ALTER TABLE patients ADD COLUMN user_id TEXT DEFAULT 'default'"))
-                conn.commit()
-        except Exception:
-            pass
         
         conn.commit()
 
